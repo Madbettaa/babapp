@@ -1,10 +1,9 @@
-const express = require("express");
-const app = express();
-const cors = require("cors");
-const jwt = require('jsonwebtoken');
-const mysql = require("mysql");
-// const XLSX = require('xlsx');
+import express, { Request, Response } from "express";
+import cors from "cors";
+import jwt from 'jsonwebtoken';
+import mysql from "mysql";
 
+const app = express();
 
 app.use(express.json());
 app.use(cors());
@@ -16,7 +15,7 @@ const db = mysql.createConnection({
     database: "babapp"
 });
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
     const q = "SELECT * FROM persons";
     db.query(q, (err, data) => {
         if (err) {
@@ -27,7 +26,7 @@ app.get("/", (req, res) => {
     });
 });
 
-app.post("/add", (req, res) => {
+app.post("/add", (req: Request, res: Response) => {
     const q = "INSERT INTO persons (CIN, name, terrain, phone, tprice, lotC) VALUES (?,?,?,?,?,?)";
     const v = [
         req.body.cin,
@@ -47,44 +46,44 @@ app.post("/add", (req, res) => {
     });
 });
 
-app.put("/edit/:id", (req, res) => {
+app.put("/edit/:id", (req: Request, res: Response) => {
     let q = "UPDATE persons SET";
-    const v = [];
+    const v: any[] = [];
 
     if (req.body.name) {
         q += " `name` = ?,";
-        v.push(req.body.name);
+        v.push(req.body.name as string);
     }
 
     if (req.body.cin) {
         q += " `cin` = ?,";
-        v.push(req.body.cin);
+        v.push(req.body.cin as string);
     }
 
     if (req.body.terrain) {
         q += " `terrain` = ?,";
-        v.push(req.body.terrain);
+        v.push(req.body.terrain as string);
     }
 
     if (req.body.phone) {
         q += " `phone` = ?,";
-        v.push(req.body.phone);
+        v.push(req.body.phone as string);
     }
 
     if (req.body.tprice) {
         q += " `tprice` = ?,";
-        v.push(req.body.tprice);
+        v.push(req.body.tprice as number);
     }
 
     if (req.body.lotC) {
         q += " `lotC` = ?,";
-        v.push(req.body.lotC);
+        v.push(req.body.lotC as string);
     }
 
     q = q.slice(0, -1);
 
     q += " WHERE id = ?";
-    v.push(req.params.id);
+    v.push(req.params.id as string);
 
     db.query(q, v, (err, data) => {
         if (err) return res.json("err");
@@ -92,8 +91,7 @@ app.put("/edit/:id", (req, res) => {
     });
 });
 
-
-app.post("/contributions/add/:personId", (req, res) => {
+app.post("/contributions/add/:personId", (req: Request, res: Response) => {
     const personId = req.params.personId; 
 
     const q = "INSERT INTO contributions (person_id, contribution_date, contribution_amount) VALUES (?,?,?)";
@@ -112,7 +110,7 @@ app.post("/contributions/add/:personId", (req, res) => {
     });
 });
 
-app.get("/contributions/:personId", (req, res) => {
+app.get("/contributions/:personId", (req: Request, res: Response) => {
     const personId = req.params.personId;
     const q = "SELECT * FROM contributions WHERE person_id = ?";
     db.query(q, [personId], (err, data) => {
@@ -124,7 +122,7 @@ app.get("/contributions/:personId", (req, res) => {
     });
 });
 
-app.put("/contribution/edit/:id", (req, res) => {
+app.put("/contribution/edit/:id", (req: Request, res: Response) => {
     const q = "UPDATE contributions SET `person_id` = ?, `contribution_date` = ?, `contribution_amount` = ? WHERE id = ?";
     const v = [
         req.body.person_id,
@@ -142,7 +140,7 @@ app.put("/contribution/edit/:id", (req, res) => {
     });
 });
 
-app.delete("/d/:id", (req, res) => {
+app.delete("/d/:id", (req: Request, res: Response) => {
     const personId = req.params.id;
 
     const deleteContributionsQuery = "DELETE FROM contributions WHERE person_id = ?";
@@ -168,8 +166,7 @@ app.delete("/d/:id", (req, res) => {
     });
 });
 
-
-app.post('/login', async (req, res) => {
+app.post('/login', async (req: Request, res: Response) => {
     try {
         const { password } = req.body;
 
@@ -193,14 +190,14 @@ app.post('/login', async (req, res) => {
     }
 });
 
-app.post('/verifyToken', (req, res) => {
+app.post('/verifyToken', (req: Request, res: Response) => {
     try {
         const { token } = req.body;
         console.log(token)
         if (!token) {
             return res.status(401).json({ message: 'No token provided' });
         }
-        jwt.verify(token, 'your_secret_key', (err, decoded) => {
+        jwt.verify(token, 'your_secret_key', (err:any, decoded:any) => {
             if (err) {
                 return res.status(401).json({ message: 'Invalid token' });
             } else {
@@ -213,34 +210,6 @@ app.post('/verifyToken', (req, res) => {
     }
 });
 
-// app.post('/upload', upload.single('file'), (req, res) => {
-//     try {
-//         const workbook = XLSX.read(req.file.buffer);
-//         const sheetName = workbook.SheetNames[0];
-//         const worksheet = workbook.Sheets[sheetName];
-//         const data = XLSX.utils.sheet_to_json(worksheet);
-
-//         data.forEach((row) => {
-//             const { CIN, name, terrain, phone, tprice, lotC } = row;
-//             const query = 'INSERT INTO persons (CIN, name, terrain, phone, tprice, lotC) VALUES (?, ?, ?, ?, ?, ?)';
-//             const values = [CIN, name, terrain, phone, tprice, lotC];
-            
-//             db.query(query, values, (err, result) => {
-//                 if (err) {
-//                     console.error('Error inserting data into database:', err);
-//                 } else {
-//                     console.log('Data inserted successfully:', result);
-//                 }
-//             });
-//         });
-        
-//         res.status(200).send('File uploaded successfully.');
-//     } catch (error) {
-//         console.error('Error uploading file:', error);
-//         res.status(500).send('Internal server error.');
-//     }
-// });
-  
 app.listen(5000, () => {
     console.log("Server is running on port 5000");
-});    
+});
