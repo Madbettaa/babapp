@@ -172,7 +172,7 @@ app.delete("/d/:id", (req, res) => {
 app.post('/login', async (req, res) => {
     try {
         const { password } = req.body;
-
+        console.log("PASSWORD: ", password);
         const query = 'SELECT password FROM users WHERE password = ?';
         db.query(query, [password], async (error, results) => {
             if (error) {
