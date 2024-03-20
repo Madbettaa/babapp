@@ -13,7 +13,7 @@ const db = mysql.createConnection({
     host: "localhost",
     user: "u968051675_madbetta",
     password: "Wmvv6559.",
-    database: "u968051675_babapp"
+    database: "u968051675_babapp1"
 });
 
 app.get("/", (req, res) => {
