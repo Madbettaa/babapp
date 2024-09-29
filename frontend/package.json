@@ -22,7 +22,6 @@
     "jspdf-autotable": "^3.8.1",
     "mysql": "^2.18.1",
     "react": "^18.2.0",
-    "react-browser-router": "^2.1.2",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.1",
     "react-scripts": "5.0.1",

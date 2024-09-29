@@ -10,10 +10,10 @@ app.use(express.json());
 app.use(cors());
 
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "u968051675_madbetta",
-    password: "Wmvv6559.",
-    database: "u968051675_babapp1"
+    host: "mysql-db:3306",
+    user: "user",
+    password: "password",
+    database: "babapp-db"
 });
 
 app.get("/", (req, res) => {
@@ -241,6 +241,6 @@ app.post('/verifyToken', (req, res) => {
 //     }
 // });
   
-app.listen(5000, () => {
+app.listen(3366, () => {
     console.log("Server is running on port 5000");
 });    

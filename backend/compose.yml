@@ -1,0 +1,32 @@
+  version: '3.8'
+
+  services:
+    ghost:
+      restart: always
+      build: .
+      networks:
+        - traefik-public
+      ports:
+        - "3366:3366"
+
+    mysql-db:
+      image: mysql:latest
+      restart: always
+      networks:
+        - traefik-public
+      ports:
+        - '3306'
+      environment:
+        MYSQL_USER: "mysql"
+        MYSQL_PASSWORD: "user"
+        MYSQL_DATABASE: "password"
+        MYSQL_ROOT_PASSWORD: "password"
+      volumes:
+        - mysql_v:/var/lib/mysql
+
+  volumes:
+    mysql_v:
+
+  networks:
+    traefik-public:
+      external: true

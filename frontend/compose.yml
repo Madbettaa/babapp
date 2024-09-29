@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  ghost:
+    restart: always
+    networks:
+      - traefik-public
+    build: .
+    ports:
+      - 3000:80
+
+networks:
+  traefik-public:
+    external: true
