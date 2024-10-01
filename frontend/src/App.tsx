@@ -15,7 +15,7 @@ function App() {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          await axios.post('http://localhost:5000/verifyToken', { token });
+          await axios.post(`http://31.220.78.64:5000/verifyToken`, { token });
           setIsLoggedIn(true);
         } catch (error) {
           setIsLoggedIn(false);

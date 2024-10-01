@@ -14,7 +14,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => { // Receive onLogin as a p
   
     const handleLogin = async () => {
       try {
-        const response = await axios.post('http://localhost:5000/login', { password });
+        const response = await axios.post(`http://31.220.78.64:5000/login`, { password });
         localStorage.setItem('token', response.data.token);
         onLogin(); // Call the onLogin function upon successful login
         navigate('/');

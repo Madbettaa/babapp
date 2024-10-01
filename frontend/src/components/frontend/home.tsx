@@ -42,14 +42,14 @@ const Home = () => {
   const [filteredPersons, setFilteredPersons] = useState<Person[]>([]);
 
   useEffect(() => {
-    Axios.get<Person[]>('http://localhost:5000/')
+    Axios.get<Person[]>('http://31.220.78.64:5000/')
       .then((res) => setPersons(res.data))
       .catch((err) => console.log(err));
   }, []);
 
   const hdelete = async (id: any) => {
     try {
-      await Axios.delete(`http://localhost:5000/d/${id}`);
+      await Axios.delete(`http://31.220.78.64:5000/d/${id}`);
       setPersons(prevPersons => prevPersons.filter(person => person.id !== id));
     } catch (err) {
       console.error('Error deleting data:', err);
@@ -93,7 +93,7 @@ const Home = () => {
   
     useEffect(() => {
       if (selectedPerson) {
-        Axios.get(`http://localhost:5000/contributions/${selectedPerson.id}`)
+        Axios.get(`http://31.220.78.64:5000/contributions/${selectedPerson.id}`)
           .then(response => {
             setContributions(response.data);
           })

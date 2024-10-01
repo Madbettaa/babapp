@@ -29,7 +29,7 @@ const Add = () => {
         //             console.error('Error uploading file:', error);
         //         });
         // }
-        Axios.post('http://localhost:5000/add', {cin,name,terrain,phone,tprice,lotC})
+        Axios.post('http://31.220.78.64:5000/add', {cin,name,terrain,phone,tprice,lotC})
         .then(res => {
             nav('/');
             console.log(res);

@@ -9,7 +9,7 @@ const AddContribution = () => {
     const navigate = useNavigate();
 
     function handleSubmit() {
-        Axios.post(`http://localhost:5000/contributions/add/${personId}`, {
+        Axios.post(`http://31.220.78.64:5000/contributions/add/${personId}`, {
             person_id: personId, 
             contribution_date: contributionDate,
             contribution_amount: contributionAmount
