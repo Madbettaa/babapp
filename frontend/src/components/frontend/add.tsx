@@ -20,7 +20,7 @@ const Add = () => {
         //     const formData = new FormData();
         //     formData.append('file', excelFile);
 
-        //     Axios.post('http://localhost:5000/upload', formData)
+        //     Axios.post('http://localhost:3366/upload', formData)
         //         .then((response) => {
         //             console.log(response.data);
         //             nav('/');
@@ -29,7 +29,7 @@ const Add = () => {
         //             console.error('Error uploading file:', error);
         //         });
         // }
-        Axios.post('http://31.220.78.64:5000/add', {cin,name,terrain,phone,tprice,lotC})
+        Axios.post('http://31.220.78.64:3366/add', {cin,name,terrain,phone,tprice,lotC})
         .then(res => {
             nav('/');
             console.log(res);
