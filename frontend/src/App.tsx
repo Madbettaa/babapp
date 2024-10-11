@@ -6,7 +6,7 @@ import Add from './components/frontend/add';
 import Edit from './components/frontend/edit';
 import AddContribution from './components/frontend/addco';
 import Login from './components/frontend/login';
-
+import { API_HOST  } from './utils/constant';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -15,7 +15,7 @@ function App() {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          await axios.post(`http://localhost:3366/verifyToken`, { token });
+          await axios.post(`${API_HOST}/verifyToken`, { token });
           setIsLoggedIn(true);
         } catch (error) {
           setIsLoggedIn(false);

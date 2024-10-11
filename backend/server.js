@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(cors());
 
 const pool = new Pool({   // PostgreSQL user
-    host: "localhost",    // PostgreSQL password
+    host: "postgres-db",    // PostgreSQL password
     port: 5432,         // Database host
     database: "babapp",
     user: "postgres",         // Your PostgreSQL database name

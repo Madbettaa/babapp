@@ -9,6 +9,7 @@ import { mdiPlusCircle } from '@mdi/js';
 import { mdiArrowRightBoldCircle } from '@mdi/js';
 import { mdiArrowLeftBoldCircle } from '@mdi/js';
 import Pdfprinter from '../../utils/pdfprinter';
+import { API_HOST  } from '../../utils/constant';
 
 interface Person {
   id: number;
@@ -42,14 +43,14 @@ const Home = () => {
   const [filteredPersons, setFilteredPersons] = useState<Person[]>([]);
 
   useEffect(() => {
-    Axios.get<Person[]>('http://localhost:3366/')
+    Axios.get<Person[]>(`${API_HOST}`)
       .then((res) => setPersons(res.data))
       .catch((err) => console.log(err));
   }, []);
 
   const hdelete = async (id: any) => {
     try {
-      await Axios.delete(`http://localhost:3366/d/${id}`);
+      await Axios.delete(`${API_HOST}/d/${id}`);
       setPersons(prevPersons => prevPersons.filter(person => person.id !== id));
     } catch (err) {
       console.error('Error deleting data:', err);

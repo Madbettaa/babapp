@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-
+import { API_HOST  } from '../../utils/constant';
 const AddContribution = () => {
     const { personId } = useParams();
     const [contributionDate, setContributionDate] = useState('');
@@ -9,7 +9,7 @@ const AddContribution = () => {
     const navigate = useNavigate();
 
     function handleSubmit() {
-        Axios.post(`http://localhost:3366/contributions/add/${personId}`, {
+        Axios.post(`${API_HOST}/contributions/add/${personId}`, {
             person_id: personId, 
             contribution_date: contributionDate,
             contribution_amount: contributionAmount

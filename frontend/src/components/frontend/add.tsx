@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import React, { useState } from 'react'
 import {useNavigate} from 'react-router-dom';
-
+import { API_HOST  } from '../../utils/constant';
 
 const Add = () => {
 
@@ -29,7 +29,7 @@ const Add = () => {
         //             console.error('Error uploading file:', error);
         //         });
         // }
-        Axios.post('http://localhost:3366/add', {cin,name,terrain,phone,tprice,lotC})
+        Axios.post(`${API_HOST}/add`, {cin,name,terrain,phone,tprice,lotC})
         .then(res => {
             nav('/');
             console.log(res);

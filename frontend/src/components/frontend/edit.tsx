@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Axios from 'axios';
+import { API_HOST  } from '../../utils/constant';
 
 const Edit = () => {
   const { id } = useParams();
@@ -13,7 +14,7 @@ const Edit = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    Axios.put(`http://localhost:3366/edit/${id}`, { cin, name, terrain , phone})
+    Axios.put(`${API_HOST}edit/${id}`, { cin, name, terrain , phone})
       .then(res => {
         console.log(res);
         nav('/');
