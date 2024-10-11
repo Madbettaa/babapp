@@ -1,1 +1,1 @@
-export const API_HOST = 'http://localhost:3366';
+export const API_HOST = 'https://api.dashaljawhara.com';
