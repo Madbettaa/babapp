@@ -19,11 +19,14 @@ RUN npm run build
 # Stage 2: Serve the app with nginx
 FROM nginx:alpine
 
+# Copy custom Nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Copy the build output from the previous stage to the nginx html folder
 COPY --from=builder /app/build /usr/share/nginx/html
 
-# Expose port 80 to serve the application
-EXPOSE 80
+# Expose port 3000 to serve the application
+EXPOSE 3000
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
