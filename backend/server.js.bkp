@@ -2,32 +2,36 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const jwt = require('jsonwebtoken');
-const { Pool } = require('pg'); // Use PostgreSQL client
+const mysql = require("mysql");
+// const XLSX = require('xlsx');
+
 
 app.use(express.json());
 app.use(cors());
 
-const pool = new Pool({   // PostgreSQL user
-    host: "localhost",    // PostgreSQL password
-    port: 5432,         // Database host
-    database: "babapp",
-    user: "postgres",         // Your PostgreSQL database name
-    password: "postgres",                    // Default PostgreSQL port
+
+var pool  = mysql.createPool({
+    connectionLimit : 10,
+    host: "localhost:3306",
+    user: "mysql",
+    password: "mysql",
+    database: "babapp"
 });
+  
 
 app.get("/", (req, res) => {
     const q = "SELECT * FROM persons";
-    pool.query(q, (err, result) => {
+    pool.query(q, (err, data) => {
         if (err) {
-            console.error(err);
-            return res.status(500).json("Error occurred while fetching persons.");
+            return res.json("err");
         }
-        return res.json(result.rows);
+        console.log(data);
+        return res.json(data);
     });
 });
 
 app.post("/add", (req, res) => {
-    const q = "INSERT INTO persons (CIN, name, terrain, phone, tprice, lotC) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *";
+    const q = "INSERT INTO persons (CIN, name, terrain, phone, tprice, lotC) VALUES (?,?,?,?,?,?)";
     const v = [
         req.body.cin,
         req.body.name,
@@ -37,12 +41,12 @@ app.post("/add", (req, res) => {
         req.body.lotC
     ];
 
-    pool.query(q, v, (err, result) => {
+    pool.query(q, v, (err, data) => {
         if (err) {
             console.error(err);
-            return res.status(500).json("Error occurred while adding person.");
+            return res.json("err");
         }
-        return res.json(result.rows[0]);
+        return res.json(data);
     });
 });
 
@@ -51,80 +55,80 @@ app.put("/edit/:id", (req, res) => {
     const v = [];
 
     if (req.body.name) {
-        q += " name = $1,";
+        q += " `name` = ?,";
         v.push(req.body.name);
     }
 
     if (req.body.cin) {
-        q += " cin = $2,";
+        q += " `cin` = ?,";
         v.push(req.body.cin);
     }
 
     if (req.body.terrain) {
-        q += " terrain = $3,";
+        q += " `terrain` = ?,";
         v.push(req.body.terrain);
     }
 
     if (req.body.phone) {
-        q += " phone = $4,";
+        q += " `phone` = ?,";
         v.push(req.body.phone);
     }
 
     if (req.body.tprice) {
-        q += " tprice = $5,";
+        q += " `tprice` = ?,";
         v.push(req.body.tprice);
     }
 
     if (req.body.lotC) {
-        q += " lotC = $6,";
+        q += " `lotC` = ?,";
         v.push(req.body.lotC);
     }
 
-    q = q.slice(0, -1); // Remove last comma
-    q += " WHERE id = $7 RETURNING *";
+    q = q.slice(0, -1);
+
+    q += " WHERE id = ?";
     v.push(req.params.id);
 
-    pool.query(q, v, (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json("Error occurred while updating person.");
-        }
-        return res.json(result.rows[0]);
+    pool.query(q, v, (err, data) => {
+        if (err) return res.json("err");
+        return res.json(data);
     });
 });
 
+
 app.post("/contributions/add/:personId", (req, res) => {
-    const personId = req.params.personId;
-    const q = "INSERT INTO contributions (person_id, contribution_date, contribution_amount) VALUES ($1, $2, $3) RETURNING *";
+    const personId = req.params.personId; 
+
+    const q = "INSERT INTO contributions (person_id, contribution_date, contribution_amount) VALUES (?,?,?)";
     const v = [
-        personId,
+        personId, 
         req.body.contribution_date,
         req.body.contribution_amount
     ];
 
-    pool.query(q, v, (err, result) => {
+    pool.query(q, v, (err, data) => {
         if (err) {
             console.error(err);
-            return res.status(500).json("Error occurred while adding contribution.");
+            return res.json("err");
         }
-        return res.json(result.rows[0]);
+        return res.json(data);
     });
 });
 
 app.get("/contributions/:personId", (req, res) => {
     const personId = req.params.personId;
-    const q = "SELECT * FROM contributions WHERE person_id = $1";
-    pool.query(q, [personId], (err, result) => {
+    const q = "SELECT * FROM contributions WHERE person_id = ?";
+    pool.query(q, [personId], (err, data) => {
         if (err) {
             console.error(err);
-            return res.status(500).json("Error occurred while fetching contributions.");
+            return res.json("err");
         }
-        return res.json(result.rows);
+        return res.json(data);
     });
 });
 
 app.put("/contribution/edit/:id", (req, res) => {
-    const q = "UPDATE contributions SET person_id = $1, contribution_date = $2, contribution_amount = $3 WHERE id = $4 RETURNING *";
+    const q = "UPDATE contributions SET `person_id` = ?, `contribution_date` = ?, `contribution_amount` = ? WHERE id = ?";
     const v = [
         req.body.person_id,
         req.body.contribution_date,
@@ -132,33 +136,33 @@ app.put("/contribution/edit/:id", (req, res) => {
         req.params.id
     ];
 
-    pool.query(q, v, (err, result) => {
+    pool.query(q, v, (err, data) => {
         if (err) {
             console.error(err);
-            return res.status(500).json("Error occurred while updating contribution.");
+            return res.json("err");
         }
-        return res.json(result.rows[0]);
+        return res.json(data);
     });
 });
 
 app.delete("/d/:id", (req, res) => {
     const personId = req.params.id;
 
-    const deleteContributionsQuery = "DELETE FROM contributions WHERE person_id = $1";
+    const deleteContributionsQuery = "DELETE FROM contributions WHERE person_id = ?";
     pool.query(deleteContributionsQuery, [personId], (err, contributionResult) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: "Error deleting contributions" });
         }
 
-        const deletePersonQuery = "DELETE FROM persons WHERE id = $1 RETURNING *";
+        const deletePersonQuery = "DELETE FROM persons WHERE id = ?";
         pool.query(deletePersonQuery, [personId], (err, personResult) => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ error: "Error deleting person" });
             }
 
-            if (personResult.rowCount === 0) {
+            if (personResult.affectedRows === 0) {
                 return res.status(404).json({ message: "No person found for deletion" });
             }
 
@@ -167,17 +171,19 @@ app.delete("/d/:id", (req, res) => {
     });
 });
 
+
 app.post('/login', async (req, res) => {
     try {
         const { password } = req.body;
-        const query = 'SELECT password FROM users WHERE password = $1';
-        pool.query(query, [password], (error, result) => {
+        console.log("PASSWORD: ", password);
+        const query = 'SELECT password FROM users WHERE password = ?';
+        pool.query(query, [password], async (error, results) => {
             if (error) {
                 console.error('Error querying database:', error);
                 return res.status(500).json({ message: 'Server error' });
             }
 
-            if (result.rows.length > 0) {
+            if (results.length > 0) {
                 const token = jwt.sign({ password }, 'your_secret_key', { expiresIn: '300s' });
                 return res.status(200).json({ token });
             } else {
@@ -193,6 +199,7 @@ app.post('/login', async (req, res) => {
 app.post('/verifyToken', (req, res) => {
     try {
         const { token } = req.body;
+        console.log(token)
         if (!token) {
             return res.status(401).json({ message: 'No token provided' });
         }
@@ -209,6 +216,34 @@ app.post('/verifyToken', (req, res) => {
     }
 });
 
+// app.post('/upload', upload.single('file'), (req, res) => {
+//     try {
+//         const workbook = XLSX.read(req.file.buffer);
+//         const sheetName = workbook.SheetNames[0];
+//         const worksheet = workbook.Sheets[sheetName];
+//         const data = XLSX.utils.sheet_to_json(worksheet);
+
+//         data.forEach((row) => {
+//             const { CIN, name, terrain, phone, tprice, lotC } = row;
+//             const query = 'INSERT INTO persons (CIN, name, terrain, phone, tprice, lotC) VALUES (?, ?, ?, ?, ?, ?)';
+//             const values = [CIN, name, terrain, phone, tprice, lotC];
+            
+//             pool.query(query, values, (err, result) => {
+//                 if (err) {
+//                     console.error('Error inserting data into database:', err);
+//                 } else {
+//                     console.log('Data inserted successfully:', result);
+//                 }
+//             });
+//         });
+        
+//         res.status(200).send('File uploaded successfully.');
+//     } catch (error) {
+//         console.error('Error uploading file:', error);
+//         res.status(500).send('Internal server error.');
+//     }
+// });
+  
 app.listen(3366, () => {
-    console.log("Server is running on port 3366");
-});
+    console.log("Server is running on port 5000");
+});    

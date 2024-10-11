@@ -13,7 +13,7 @@ const Edit = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    Axios.put(`http://31.220.78.64:3366/edit/${id}`, { cin, name, terrain , phone})
+    Axios.put(`http://localhost:3366/edit/${id}`, { cin, name, terrain , phone})
       .then(res => {
         console.log(res);
         nav('/');

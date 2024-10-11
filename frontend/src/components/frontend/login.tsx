@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_HOST  } from '../../utils/constant';
 
 interface LoginProps {
   onLogin: () => void; // Define the type for onLogin prop
@@ -14,12 +15,13 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => { // Receive onLogin as a p
   
     const handleLogin = async () => {
       try {
-        const response = await axios.post(`http://31.220.78.64:3366/login`, { password });
+        const response = await axios.post(`${API_HOST}/login`, { password });
         localStorage.setItem('token', response.data.token);
         onLogin(); // Call the onLogin function upon successful login
         navigate('/');
         console.log('Login successful');
       } catch (error) {
+        console.log(error);
         setError('Invalid password');
       }
     };
