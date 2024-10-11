@@ -1,31 +1,20 @@
   version: '3.8'
 
   services:
-    ghost:
+    babapp-backend:
       restart: always
       build: .
       networks:
         - traefik-public
-      ports:
-        - "3366:3366"
-
-    mysql-db:
-      image: mysql:latest
-      restart: always
-      networks:
-        - traefik-public
-      ports:
-        - '3306'
-      environment:
-        MYSQL_USER: "mysql"
-        MYSQL_PASSWORD: "user"
-        MYSQL_DATABASE: "password"
-        MYSQL_ROOT_PASSWORD: "password"
-      volumes:
-        - mysql_v:/var/lib/mysql
-
-  volumes:
-    mysql_v:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=traefik-public"
+        - "traefik.http.routers.babapp-backend.tls=true"
+        - "traefik.http.routers.babapp-backend.tls.certresolver=le"
+        - "traefik.http.routers.babapp-backend.entrypoints=websecure"
+        - "traefik.http.routers.babapp-backend.service=babapp-backend"
+        - "traefik.http.routers.babapp-backend.rule=Host(`api.dashaljawhara.com`)"
+        - "traefik.http.services.babapp-backend.loadbalancer.server.port=3366"
 
   networks:
     traefik-public:
