@@ -22,14 +22,14 @@ const AddContribution = () => {
     }
 
     return (
-        <main className='left-[21%] top-[25%] relative w-[70%] h-[100%]'>
-            <div className='absolute w-[80%] h-[100%]'>
-                <div className='d-flex vh-100 bg-[#555555] justify-content-center align-items-center drop-shadow-2xl shadow-[#777777] rounded-lg'>
-                    <div className='w-50 bg-white rounded p-4'>
-                        <h1 className='text-center text-roboto mb-4'>Add New Contribution</h1>
+        <main className='relative w-[70%] h-screen overflow-y-auto left-[21%] top-[25%]'>
+            <div className='relative w-[80%] h-full mx-auto py-10'>
+                <div className='flex min-h-screen justify-center items-center bg-[#555555] drop-shadow-2xl shadow-[#777777] rounded-lg p-4'>
+                    <div className='w-full max-w-md bg-white rounded p-4'>
+                        <h1 className='text-center font-roboto mb-4'>Ajouter une nouvelle contribution</h1>
                         <form className='flex flex-col items-center space-y-4'>
                             <div className='flex flex-col items-start w-full mb-4'>
-                                <label htmlFor='contributionDate' className='text-sm mb-1'>Contribution Date</label>
+                                <label htmlFor='contributionDate' className='text-sm mb-1'>Date de cotisation</label>
                                 <input
                                     type='date'
                                     id='contributionDate'
@@ -38,11 +38,11 @@ const AddContribution = () => {
                                 />
                             </div>
                             <div className='flex flex-col items-start w-full mb-4'>
-                                <label htmlFor='contributionAmount' className='text-sm mb-1'>Contribution Amount</label>
+                                <label htmlFor='contributionAmount' className='text-sm mb-1'>Montant de la cotisation</label>
                                 <input
                                     type='text'
                                     id='contributionAmount'
-                                    placeholder='Enter Contribution Amount'
+                                    placeholder='Enter le montant de la cotisation'
                                     className='border p-2 w-full'
                                     onChange={(e) => setContributionAmount(e.target.value)}
                                 />
@@ -52,7 +52,7 @@ const AddContribution = () => {
                     </div>
                 </div>
             </div>
-        </main>
+    </main>   
     );
 };
 

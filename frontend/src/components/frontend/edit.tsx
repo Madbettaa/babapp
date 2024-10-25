@@ -40,21 +40,21 @@ const Edit = () => {
                         />
                     </div>
                     <div className='flex flex-col items-start w-full mb-4'>
-                        <label htmlFor='name' className='text-sm mb-1'>Name</label>
+                        <label htmlFor='name' className='text-sm mb-1'>Nom</label>
                         <input
                         type='text'
                         id='name'
-                        placeholder='Enter new Name'
+                        placeholder='Entrer le nom'
                         className='border p-2 w-full'
                         onChange={(e) => setName(e.target.value)}
                         />
                     </div>
                     <div className='flex flex-col items-start w-full mb-4'>
-                        <label htmlFor='phone' className='text-sm mb-1'>Phone</label>
+                        <label htmlFor='phone' className='text-sm mb-1'>Numéro de téléphone</label>
                         <input
                         type='text'
                         id='phone'
-                        placeholder='Enter new Phone'
+                        placeholder='Entrer Numéro de téléphone'
                         className='border p-2 w-full'
                         onChange={(e) => setphone(e.target.value)}
                         />
@@ -64,7 +64,7 @@ const Edit = () => {
                         <input
                         type='text'
                         id='terrain'
-                        placeholder='Enter new Terrain'
+                        placeholder='Entrer Terrain'
                         className='border p-2 w-full'
                         onChange={(e) => setTerrain(e.target.value)}
                         />

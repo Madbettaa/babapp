@@ -108,15 +108,15 @@ const Home = () => {
       <main className='absolute top-[10vh] left-[102vh] w-[20vh] h-[78vh] bg-white drop-shadow-2xl shadow-[#777777] rounded-lg'>
             <div className='p-2 overflow-y-auto'>
         <div className='absolute top-[2vh] left-[0.5vh] relative justify-items-start grid w-[100%]'>
-          <div className='font-bold'>Name:</div>
+          <div className='font-bold'>Nom:</div>
           <div className='flex justify-center items-center border-box w-[156px] h-[35px] bg-[white] mt-[5px] pt-0.5 rounded-lg drop-shadow-xl'>{selectedPerson?.name}</div>
           <div className='font-bold'>CIN:</div>
           <div className='flex justify-center items-center border-box w-[156px] h-[35px] bg-[white] mt-[5px] pt-0.5 rounded-lg drop-shadow-xl'>{selectedPerson?.CIN}</div>
-          <div className='font-bold'>Phone:</div>
+          <div className='font-bold'>Numéro de téléphone:</div>
           <div className='flex justify-center items-center border-box w-[156px] h-[35px] bg-[white] mt-[5px] pt-0.5 rounded-lg drop-shadow-xl'>{selectedPerson?.phone}</div>
           <div className='font-bold'>Terrain:</div>
           <div className='flex justify-center items-center border-box w-[156px] h-[35px] bg-[white] mt-[5px] pt-0.5 rounded-lg drop-shadow-xl'>{selectedPerson?.terrain}</div>
-          <div className='font-bold'>Terrain Price:</div>
+          <div className='font-bold'>Prix de Terrain:</div>
           <div className='flex justify-center items-center border-box w-[156px] h-[35px] bg-[white] mt-[5px] pt-0.5 rounded-lg drop-shadow-xl'>{selectedPerson?.tprice}</div>
           <div className='font-bold'>Lot Commercial:</div>
           <div className='flex justify-center items-center border-box w-[156px] h-[35px] bg-[white] mt-[5px] pt-0.5 rounded-lg drop-shadow-xl'>{selectedPerson?.lotC}</div>
@@ -153,8 +153,8 @@ const Home = () => {
 
             <div className='flex justify-center items-center space-x-12 p-1'>
               <div className='relative right-[13vh]'>CIN</div>
-              <div className='relative right-[8vh]'>NAME</div>
-              <div className='relative right-[3vh]'>PHONE</div>
+              <div className='relative right-[8vh]'>Nom</div>
+              <div className='relative right-[3vh]'>Numéro de téléphone</div>
               <div className='relative right-[3vh]'>TERRAIN</div>
             </div>
           </div>
